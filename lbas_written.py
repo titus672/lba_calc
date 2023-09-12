@@ -5,7 +5,8 @@ import requests
 from config import influx_url, influx_token, influx_org, influx_bucket
 import time
 import os
-
+import logging
+from datetime import datetime
 # script for uploading disk tbw from samsung ssd's to influxdb
 # currently functioning with the 850/860 PRO and 870 EVO
 # Host: Proxmox VE
@@ -43,6 +44,7 @@ def get_blockdevices():
     return devices
 
 def main():
+    logging.basicConfig(filename='drives.log', encoding='utf-8', level=logging.INFO)
     ...
     devices = get_blockdevices()
     for device in devices:
@@ -50,6 +52,7 @@ def main():
         drive.load_data()
         line = f"drives,block_id={drive.drive_letter},node={drive.node},model={drive.model} tbw={drive.tbw} {drive.time}"
         print(influx_post_write_connector(line))
+        logging.info(f"wrote data for {drive.drive_letter} in {drive.node} at {datetime.now()}")
 
 if __name__ == "__main__":
     main()
