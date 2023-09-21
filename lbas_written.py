@@ -37,7 +37,7 @@ def get_blockdevices():
     blockdevices = json.loads(process.stdout)
     devices = []
     # list of devices to skip, add more as needed
-    bad_devices = ["rbd0", "sr0","rbd1"]
+    bad_devices = ["rbd0", "sr0","rbd1", "loop0", "loop1", "loop2", "loop3", "loop4", "loop5", "loop6", "loop7"]
     for device in blockdevices["blockdevices"]:
         if device["name"] not in bad_devices:
             devices.append(device["name"])
